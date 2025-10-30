@@ -10,7 +10,7 @@ import {
   onIdTokenChanged,
 } from "@/src/lib/firebase/auth.js";
 // import helper to seed fake data into Firestore (used by a menu action)
-import { addFakeRestaurantsAndReviews } from "@/src/lib/firebase/firestore.js";
+import { addFakeSchoolsAndReviews } from "@/src/lib/firebase/firestore.js";
 // cookie helpers to persist the session token on the client
 import { setCookie, deleteCookie } from "cookies-next";
 
@@ -93,9 +93,9 @@ export default function Header({ initialUser }) {
                 <li>{user.displayName}</li>
 
                 <li>
-                  {/* link that seeds sample restaurants/reviews when clicked */}
-                  <a href="#" onClick={addFakeRestaurantsAndReviews}>
-                    Add sample restaurants
+                  {/* link that seeds sample schools/reviews when clicked */}
+                  <a href="#" onClick={addFakeSchoolsAndReviews}>
+                    Add sample schools
                   </a>
                 </li>
 

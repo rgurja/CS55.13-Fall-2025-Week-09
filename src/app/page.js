@@ -1,7 +1,7 @@
-// import the RestaurantListings client component used to render the list
-import RestaurantListings from "@/src/components/RestaurantListings.jsx";
-// import server-side helper to fetch restaurants from Firestore
-import { getRestaurants } from "@/src/lib/firebase/firestore.js";
+// import the SchoolListings client component used to render the list
+import SchoolListings from "@/src/components/SchoolListings.jsx";
+// import server-side helper to fetch schools from Firestore
+import { getSchools } from "@/src/lib/firebase/firestore.js";
 // import a helper that returns a Firebase server app authenticated for the current user
 import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp.js";
 // import getFirestore to obtain a Firestore instance from the server Firebase app
@@ -21,16 +21,16 @@ export default async function Home(props) {
   // Using searchParams which Next.js provides allows filtering on the server-side, e.g. ?city=London&category=Indian&sort=Review
   // get an authenticated server-scoped Firebase app for the incoming request
   const { firebaseServerApp } = await getAuthenticatedAppForUser();
-  // fetch restaurants from Firestore using the server app and the provided search params
-  const restaurants = await getRestaurants(
+  // fetch schools from Firestore using the server app and the provided search params
+  const schools = await getSchools(
     getFirestore(firebaseServerApp),
     searchParams
   );
   // render the page markup, passing initial restaurants and search params down to the listings component
   return (
     <main className="main__home">
-      <RestaurantListings
-        initialRestaurants={restaurants}
+      <SchoolListings
+        initialSchools={schools}
         searchParams={searchParams}
       />
     </main>

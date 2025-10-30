@@ -1,29 +1,30 @@
 // import model and plugin helpers from genkit/googleai
 import { gemini20Flash, googleAI } from "@genkit-ai/googleai"; // model & plugin exports
 import { genkit } from "genkit"; // genkit factory for LLM usage
-import { getReviewsByRestaurantId } from "@/src/lib/firebase/firestore.js"; // helper to fetch reviews
+import { getReviewsByRestaurantId, getReviewsBySchoolId } from "@/src/lib/firebase/firestore.js"; // helper to fetch reviews
 import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp"; // server-side auth helper
 import { getFirestore } from "firebase/firestore"; // to obtain a Firestore instance from the server app
 
 // Server component that summarizes reviews using Gemini via Genkit
-export async function GeminiSummary({ restaurantId }) { // server component entry, accepts restaurantId prop
+export async function GeminiSummary({ restaurantId, schoolId }) { // server component entry, accepts ids
   // get a server-authenticated Firebase app instance for the current user
   const { firebaseServerApp } = await getAuthenticatedAppForUser();
   // firebaseServerApp is the admin-authenticated app for this request
   // fetch the reviews for the restaurant from Firestore
-  const reviews = await getReviewsByRestaurantId(
-    getFirestore(firebaseServerApp),
-    restaurantId
-  );
+  const db = getFirestore(firebaseServerApp);
+  const targetId = schoolId || restaurantId;
+  const reviews = schoolId
+    ? await getReviewsBySchoolId(db, targetId)
+    : await getReviewsByRestaurantId(db, targetId);
   // reviews is now an array of review objects from Firestore
 
   // choose a simple separator to join reviews (keeps them distinct)
   const reviewSeparator = "@"; // delimiter used to separate reviews in the prompt
   // craft a simple prompt that includes all review text separated by the chosen delimiter
   const prompt = `
-    Based on the following restaurant reviews, 
+    Based on the following ${schoolId ? "school" : "restaurant"} reviews, 
     where each review is separated by a '${reviewSeparator}' character, 
-    create a one-sentence summary of what people think of the restaurant. 
+    create a one-sentence summary of what people think of the ${schoolId ? "school" : "restaurant"}. 
 
     Here are the reviews: ${reviews.map((review) => review.text).join(reviewSeparator)}
   `;

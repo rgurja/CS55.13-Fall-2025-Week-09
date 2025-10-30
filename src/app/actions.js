@@ -1,6 +1,6 @@
 "use server";
 
-import { addReviewToRestaurant } from "@/src/lib/firebase/firestore.js";
+import { addReviewToRestaurant, addReviewToSchool } from "@/src/lib/firebase/firestore.js";
 import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp.js";
 import { getFirestore } from "firebase/firestore";
 
@@ -12,11 +12,17 @@ export async function handleReviewFormSubmission(data) {
         const { app } = await getAuthenticatedAppForUser();
         const db = getFirestore(app);
 
-        await addReviewToRestaurant(db, data.get("restaurantId"), {
-                text: data.get("text"),
-                rating: data.get("rating"),
+        const schoolId = data.get("schoolId");
+        const restaurantId = data.get("restaurantId");
+        const review = {
+          text: data.get("text"),
+          rating: data.get("rating"),
+          userId: data.get("userId"),
+        };
 
-                // This came from a hidden form field.
-                userId: data.get("userId"),
-        });
+        if (schoolId) {
+          await addReviewToSchool(db, schoolId, review);
+        } else {
+          await addReviewToRestaurant(db, restaurantId, review);
+        }
 }

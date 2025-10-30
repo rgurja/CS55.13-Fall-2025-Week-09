@@ -1,4 +1,4 @@
-// The filters shown on the restaurant listings page
+// The filters shown on the listings page
 
 import Tag from "@/src/components/Tag.jsx";
 
@@ -38,7 +38,7 @@ export default function Filters({ filters, setFilters }) {
         <summary>
           <img src="/filter.svg" alt="filter" />
           <div>
-            <p>Restaurants</p>
+            <p>Schools</p>
             <p>Sorted by {filters.sort || "Rating"}</p>
           </div>
         </summary>
@@ -50,30 +50,6 @@ export default function Filters({ filters, setFilters }) {
             event.target.parentNode.removeAttribute("open");
           }}
         >
-          <FilterSelect
-            label="Category"
-            options={[
-              "",
-              "Italian",
-              "Chinese",
-              "Japanese",
-              "Mexican",
-              "Indian",
-              "Mediterranean",
-              "Caribbean",
-              "Cajun",
-              "German",
-              "Russian",
-              "Cuban",
-              "Organic",
-              "Tapas",
-            ]}
-            value={filters.category}
-            onChange={(event) => handleSelectionChange(event, "category")}
-            name="category"
-            icon="/food.svg"
-          />
-
           <FilterSelect
             label="City"
             options={[
@@ -96,14 +72,71 @@ export default function Filters({ filters, setFilters }) {
             icon="/location.svg"
           />
 
+          <div>
+            <img src="/location.svg" alt="District" />
+            <label>
+              District
+              <input
+                type="text"
+                value={filters.district || ""}
+                onChange={(e) =>
+                  setFilters((prev) => ({ ...prev, district: e.target.value }))
+                }
+                name="district"
+              />
+            </label>
+          </div>
+
           <FilterSelect
-            label="Price"
+            label="Tuition"
             options={["", "$", "$$", "$$$", "$$$$"]}
-            value={filters.price}
-            onChange={(event) => handleSelectionChange(event, "price")}
-            name="price"
+            value={filters.tuitionBand}
+            onChange={(event) => handleSelectionChange(event, "tuitionBand")}
+            name="tuitionBand"
             icon="/price.svg"
           />
+
+          <div>
+            <img src="/filter.svg" alt="Type" />
+            <label>
+              Public
+              <select
+                value={filters.isPublic === true ? "true" : filters.isPublic === false ? "false" : ""}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setFilters((prev) => ({
+                    ...prev,
+                    isPublic: val === "" ? "" : val,
+                  }));
+                }}
+                name="isPublic"
+              >
+                <option value="">All</option>
+                <option value="true">Public</option>
+                <option value="false">Private</option>
+              </select>
+            </label>
+          </div>
+
+          <div>
+            <img src="/filter.svg" alt="Grades" />
+            <label>
+              Grades
+              <select
+                multiple
+                value={filters.grades || []}
+                onChange={(e) => {
+                  const selected = Array.from(e.target.selectedOptions).map((o) => o.value);
+                  setFilters((prev) => ({ ...prev, grades: selected }));
+                }}
+                name="grades"
+              >
+                <option value="K-5">K-5</option>
+                <option value="6-8">6-8</option>
+                <option value="9-12">9-12</option>
+              </select>
+            </label>
+          </div>
 
           <FilterSelect
             label="Sort"
@@ -122,8 +155,10 @@ export default function Filters({ filters, setFilters }) {
                 onClick={() => {
                   setFilters({
                     city: "",
-                    category: "",
-                    price: "",
+                    district: "",
+                    isPublic: "",
+                    grades: [],
+                    tuitionBand: "",
                     sort: "",
                   });
                 }}

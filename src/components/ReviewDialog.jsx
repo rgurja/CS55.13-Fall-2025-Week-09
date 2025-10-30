@@ -12,7 +12,8 @@ const ReviewDialog = ({ // component definition and props destructuring
   review, // object: current review state (e.g., { text, rating })
   onChange, // function: called when local review state changes
   userId, // string: id of the current user
-  id, // string: id of the restaurant being reviewed
+  id, // string: id of the entity being reviewed
+  isSchool, // optional: whether this dialog is for a school
 }) => {
   const dialog = useRef(); // ref to the native <dialog> element
 
@@ -66,7 +67,11 @@ const ReviewDialog = ({ // component definition and props destructuring
           </p>
           {/* end paragraph */}
 
-          <input type="hidden" name="restaurantId" value={id} />
+          {isSchool ? (
+            <input type="hidden" name="schoolId" value={id} />
+          ) : (
+            <input type="hidden" name="restaurantId" value={id} />
+          )}
           {/* hidden input carrying restaurant id */}
           <input type="hidden" name="userId" value={userId} />
           {/* hidden input carrying user id */}

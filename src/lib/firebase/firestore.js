@@ -1,5 +1,5 @@
 // import helper which generates fake restaurants and reviews for testing
-import { generateFakeRestaurantsAndReviews } from "@/src/lib/fakeRestaurants.js"; // helper to create demo data
+// (removed) generateFakeRestaurantsAndReviews import
 
 // import Firestore functions used throughout this module
 import {
@@ -33,6 +33,7 @@ import {
 
 // import the client-side Firestore database instance
 import { db } from "@/src/lib/firebase/clientApp"; // application's Firestore client
+import { generateFakeSchoolsAndReviews } from "@/src/lib/fakeSchools.js";
 
 // update the photo URL field for a restaurant document
 export async function updateRestaurantImageReference(
@@ -109,6 +110,166 @@ export async function addReviewToRestaurant(db, restaurantId, review) {
                 );
                 throw error;
         }
+}
+
+// =============================
+// Schools (new domain)
+// =============================
+
+// update the photo URL field for a school document
+export async function updateSchoolImageReference(schoolId, publicImageUrl) {
+  const schoolRef = doc(collection(db, "schools"), schoolId);
+  if (schoolRef) {
+    await updateDoc(schoolRef, { photo: publicImageUrl });
+  }
+}
+
+// helper to update rating totals inside a transaction and add the review document for schools
+const updateSchoolWithRating = async (
+  transaction,
+  docRef,
+  newRatingDocument,
+  review
+) => {
+  const school = await transaction.get(docRef);
+  const data = school.data();
+  const newNumRatings = data?.numRatings ? data.numRatings + 1 : 1;
+  const newSumRating = (data?.sumRating || 0) + Number(review.rating);
+  const newAverage = newSumRating / newNumRatings;
+
+  transaction.update(docRef, {
+    numRatings: newNumRatings,
+    sumRating: newSumRating,
+    avgRating: newAverage,
+  });
+
+  transaction.set(newRatingDocument, {
+    ...review,
+    timestamp: Timestamp.fromDate(new Date()),
+  });
+};
+
+export async function addReviewToSchool(db, schoolId, review) {
+  if (!schoolId) {
+    throw new Error("No school ID has been provided.");
+  }
+  if (!review) {
+    throw new Error("A valid review has not been provided.");
+  }
+
+  try {
+    const docRef = doc(collection(db, "schools"), schoolId);
+    const newRatingDocument = doc(collection(db, `schools/${schoolId}/ratings`));
+    await runTransaction(db, (transaction) =>
+      updateSchoolWithRating(transaction, docRef, newRatingDocument, review)
+    );
+  } catch (error) {
+    console.error("There was an error adding the rating to the school", error);
+    throw error;
+  }
+}
+
+function applySchoolQueryFilters(q, { city, district, isPublic, grades, tuitionBand, sort }) {
+  if (city) {
+    q = query(q, where("city", "==", city));
+  }
+  if (district) {
+    q = query(q, where("district", "==", district));
+  }
+  if (typeof isPublic === "boolean") {
+    q = query(q, where("isPublic", "==", isPublic));
+  }
+  if (grades && Array.isArray(grades) && grades.length > 0) {
+    q = query(q, where("grades", "array-contains-any", grades));
+  }
+  if (tuitionBand) {
+    // expect tuitionBand like "$", "$$" etc., store as numeric band length
+    const band = typeof tuitionBand === "number" ? tuitionBand : String(tuitionBand).length;
+    q = query(q, where("tuitionBand", "==", band));
+  }
+  if (sort === "Rating" || !sort) {
+    q = query(q, orderBy("avgRating", "desc"));
+  } else if (sort === "Review") {
+    q = query(q, orderBy("numRatings", "desc"));
+  }
+  return q;
+}
+
+export async function getSchools(dbArg = db, filters = {}) {
+  let q = query(collection(dbArg, "schools"));
+  q = applySchoolQueryFilters(q, filters);
+  const results = await getDocs(q);
+  return results.docs.map((docSnap) => ({
+    id: docSnap.id,
+    ...docSnap.data(),
+    timestamp: docSnap.data().timestamp.toDate(),
+  }));
+}
+
+export function getSchoolsSnapshot(cb, filters = {}) {
+  if (typeof cb !== "function") {
+    console.log("Error: The callback parameter is not a function");
+    return;
+  }
+  let q = query(collection(db, "schools"));
+  q = applySchoolQueryFilters(q, filters);
+  return onSnapshot(q, (querySnapshot) => {
+    const results = querySnapshot.docs.map((docSnap) => ({
+      id: docSnap.id,
+      ...docSnap.data(),
+      timestamp: docSnap.data().timestamp.toDate(),
+    }));
+    cb(results);
+  });
+}
+
+export async function getSchoolById(dbArg, schoolId) {
+  if (!schoolId) {
+    console.log("Error: Invalid ID received: ", schoolId);
+    return;
+  }
+  const docRef = doc(dbArg, "schools", schoolId);
+  const docSnap = await getDoc(docRef);
+  return {
+    ...docSnap.data(),
+    timestamp: docSnap.data().timestamp.toDate(),
+  };
+}
+
+export async function getReviewsBySchoolId(dbArg, schoolId) {
+  if (!schoolId) {
+    console.log("Error: Invalid schoolId received: ", schoolId);
+    return;
+  }
+  const q = query(
+    collection(dbArg, "schools", schoolId, "ratings"),
+    orderBy("timestamp", "desc")
+  );
+  const results = await getDocs(q);
+  return results.docs.map((docSnap) => ({
+    id: docSnap.id,
+    ...docSnap.data(),
+    timestamp: docSnap.data().timestamp.toDate(),
+  }));
+}
+
+export function getReviewsSnapshotBySchoolId(schoolId, cb) {
+  if (!schoolId) {
+    console.log("Error: Invalid schoolId received: ", schoolId);
+    return;
+  }
+  const q = query(
+    collection(db, "schools", schoolId, "ratings"),
+    orderBy("timestamp", "desc")
+  );
+  return onSnapshot(q, (querySnapshot) => {
+    const results = querySnapshot.docs.map((docSnap) => ({
+      id: docSnap.id,
+      ...docSnap.data(),
+      timestamp: docSnap.data().timestamp.toDate(),
+    }));
+    cb(results);
+  });
 }
 
 // apply simple query filters (category, city, price, sort) to a base query
@@ -267,28 +428,16 @@ export function getReviewsSnapshotByRestaurantId(restaurantId, cb) {
   });
 }
 
-// generate and add fake restaurants and reviews to Firestore (for demo/test)
-export async function addFakeRestaurantsAndReviews() {
-  // generate the fake data using the helper
-  const data = await generateFakeRestaurantsAndReviews();
-  // iterate over each generated restaurant and its ratings
-  for (const { restaurantData, ratingsData } of data) {
+// generate and add fake schools and reviews to Firestore (for demo/test)
+export async function addFakeSchoolsAndReviews() {
+  const data = await generateFakeSchoolsAndReviews();
+  for (const { schoolData, ratingsData } of data) {
     try {
-      // add the restaurant document to the 'restaurants' collection
-      const docRef = await addDoc(
-        collection(db, "restaurants"),
-        restaurantData
-      );
-
-      // for each rating, add a subdocument under the restaurant's 'ratings' subcollection
+      const docRef = await addDoc(collection(db, "schools"), schoolData);
       for (const ratingData of ratingsData) {
-        await addDoc(
-          collection(db, "restaurants", docRef.id, "ratings"),
-          ratingData
-        );
+        await addDoc(collection(db, "schools", docRef.id, "ratings"), ratingData);
       }
     } catch (e) {
-      // log a user-friendly message and the detailed error
       console.log("There was an error adding the document");
       console.error("Error adding document: ", e);
     }
