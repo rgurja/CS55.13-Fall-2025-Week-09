@@ -1,7 +1,8 @@
 {
   "projects": {
     "restaurant-review": "cs55-13-fall-2025-week-0-3fd38",
-    "schools": "schools-ec79b"
+    "schools": "schools-ec79b",
+    "y": "schools-ec79b"
   },
   "targets": {},
   "etags": {}
