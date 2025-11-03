@@ -13,7 +13,7 @@ body {
     system-ui,
     -apple-system;
   background-color: #cecfd0;
-  color: #3600e6;
+  color: #0051ff;
 }
 h1,
 h2,
@@ -105,15 +105,15 @@ footer {
 }
 
 header {
-  background-color: #61035e;
+  background-color: #025956;
   color: #f6e7f5;
   display: flex;
   justify-content: space-between;
   padding: 0 1rem;
-  height: 95px;
+  height: 100px;
   align-items: center;
   & img {
-    height: 5rem;
+    height: 2rem;
   }
 
   & ul {
