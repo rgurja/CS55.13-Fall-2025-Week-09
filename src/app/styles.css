@@ -12,7 +12,7 @@ body {
     ui-sans-serif,
     system-ui,
     -apple-system;
-  background-color: #F4F4F4;
+  background-color: #e5f5f5;
   color: #333333;
 }
 h1,
@@ -105,15 +105,15 @@ footer {
 }
 
 header {
-  background-color: #521c25;
+  background-color: #023d34;
   color: #f7e5e4;
   display: flex;
   justify-content: space-between;
-  padding: 0 1rem;
+  padding: 0 2rem;
   height: 70px;
   align-items: center;
   & img {
-    height: 2rem;
+    height: 5rem;
   }
 
   & ul {
@@ -140,7 +140,7 @@ header {
   align-items: center;
 
   & img {
-    margin-inline-end: 10px;
+    margin-inline-end: 15px;
   }
 
   color: white;
@@ -203,7 +203,7 @@ header {
 }
 
 .main__home {
-  background-color: #F4F4F4;
+  background-color: #b8f3ec;
   min-height: 100vh;
 }
 
