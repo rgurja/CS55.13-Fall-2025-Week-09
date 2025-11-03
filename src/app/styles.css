@@ -1,4 +1,16 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,500;0,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,500;0,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Merriweather:wght@400;700&display=swap");
+
+:root {
+  --color-bg: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-text: #1f2937;
+  --color-primary: #1e3a8a; /* deep academic blue */
+  --color-accent: #f59e0b; /* scholastic gold */
+  --color-header-bg: #0f172a; /* dark slate header */
+  --color-header-text: #e5e7eb;
+  --color-muted: #6b7280;
+  --color-border: #e5e7eb;
+}
 
 * {
   box-sizing: border-box;
@@ -12,14 +24,14 @@ body {
     ui-sans-serif,
     system-ui,
     -apple-system;
-  background-color: #cecfd0;
-  color: #0051ff;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 h1,
 h2,
 h3 {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  color: #007bff;
+  font-family: "Merriweather", "Helvetica Neue", Arial, sans-serif;
+  color: var(--color-primary);
 }
 
 ul {
@@ -91,7 +103,7 @@ footer {
   }
 
   & .button--confirm {
-    background-color: #0069a5;
+    background-color: var(--color-primary);
     color: white;
     border-radius: 3px;
   }
@@ -105,8 +117,8 @@ footer {
 }
 
 header {
-  background-color: #025956;
-  color: #f6e7f5;
+  background-color: var(--color-header-bg);
+  color: var(--color-header-text);
   display: flex;
   justify-content: space-between;
   padding: 0 1rem;
@@ -124,11 +136,11 @@ header {
   }
   & a {
     text-decoration: none;
-    color: #f7e5e4;
+    color: var(--color-header-text);
   }
   .profileImage {
     border-radius: 100%;
-    border-color: #f7e5e4;
+    border-color: var(--color-header-text);
     border-width: 2px;
     border-style: solid;
     margin-right: 10px;
@@ -143,7 +155,7 @@ header {
     margin-inline-end: 18px;
   }
 
-  color: white;
+  color: var(--color-header-text);
   text-decoration: none;
   font-size: 1.25rem;
   font-weight: 500;
@@ -203,18 +215,18 @@ header {
 }
 
 .main__home {
-  background-color: #dbdbdb;
+  background-color: var(--color-bg);
   min-height: 100vh;
 }
 
 .main__restaurant {
-  background-color: #effbdc;
+  background-color: var(--color-bg);
   min-height: 90vh;
 }
 
 article {
   margin: 0 auto;
-  background-color: rgba(240, 240, 239, 0.888);
+  background-color: var(--color-surface);
   padding: 20px 40px;
 }
 
@@ -235,7 +247,7 @@ article {
   }
 
   & a {
-    color: black;
+    color: var(--color-text);
     display: flex;
     flex-direction: column;
     flex: 2 1 100%;
@@ -290,11 +302,11 @@ a {
   & svg {
     width: 2rem;
     height: 2rem;
-    color: rgb(255 202 40);
+    color: var(--color-accent);
   }
 
   & span {
-    color: rgb(156 163 175);
+    color: var(--color-muted);
   }
 }
 
@@ -329,15 +341,15 @@ a {
 }
 
 .details__container {
-  --tw-gradient-from: #c60094 var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(56 85 116 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-from: rgba(15, 23, 42, 0.7) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgba(15, 23, 42, 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
   background-image: linear-gradient(to top right, var(--tw-gradient-stops));
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgb(24 25 26 / 50%);
+  background: rgb(24 25 26 / 40%);
   width: 100%;
   height: 100%;
 }
@@ -490,7 +502,7 @@ a {
 .filter-menu {
   background-color: white;
   border-radius: 3px;
-  border-bottom: 1px solid rgb(41, 46, 51);
+  border-bottom: 1px solid var(--color-border);
 
   & summary {
     font-weight: bold;
@@ -528,7 +540,7 @@ a {
   }
 
   & select {
-    color: rgb(5, 7, 12);
+    color: var(--color-text);
     font-size: 0.875rem;
     line-height: 1.25rem;
     padding-top: 1rem;
@@ -538,7 +550,7 @@ a {
     border: 0;
     border-bottom-width: 2px;
     border-style: solid;
-    border-color: #e5e7eb;
+    border-color: var(--color-border);
   }
 
   & p:first-child {
@@ -549,7 +561,7 @@ a {
   }
 
   & p:last-child {
-    color: rgb(42 72 101);
+    color: var(--color-primary);
     font-weight: 600;
     font-size: 0.875rem;
     line-height: 1.25rem;
@@ -573,7 +585,7 @@ a {
     padding-bottom: 0.25rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    background-color: rgb(71 98 130);
+    background-color: var(--color-primary);
     border-radius: 9999px;
     color: white;
     font-size: 0.95rem;
