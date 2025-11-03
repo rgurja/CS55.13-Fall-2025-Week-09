@@ -12,6 +12,14 @@ body {
     ui-sans-serif,
     system-ui,
     -apple-system;
+  background-color: #F4F4F4;
+  color: #333333;
+}
+h1,
+h2,
+h3 {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: #007BFF;
 }
 
 ul {
@@ -83,7 +91,7 @@ footer {
   }
 
   & .button--confirm {
-    background-color: rgb(255 111 0);
+    background-color: #007BFF;
     color: white;
     border-radius: 3px;
   }
@@ -194,12 +202,12 @@ header {
 }
 
 .main__home {
-  background-color: rgb(178 193 212);
+  background-color: #F4F4F4;
   min-height: 100vh;
 }
 
 .main__restaurant {
-  background-color: rgb(229 234 240);
+  background-color: #F4F4F4;
   min-height: 90vh;
 }
 
