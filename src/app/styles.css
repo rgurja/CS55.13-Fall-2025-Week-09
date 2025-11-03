@@ -105,15 +105,15 @@ footer {
 }
 
 header {
-  background-color: #023d34;
+  background-color: #023145;
   color: #f7e5e4;
   display: flex;
   justify-content: space-between;
-  padding: 0 2rem;
-  height: 70px;
+  padding: 0 1rem;
+  height: 100px;
   align-items: center;
   & img {
-    height: 5rem;
+    height: 2rem;
   }
 
   & ul {
@@ -140,7 +140,7 @@ header {
   align-items: center;
 
   & img {
-    margin-inline-end: 15px;
+    margin-inline-end: 12px;
   }
 
   color: white;
@@ -203,12 +203,12 @@ header {
 }
 
 .main__home {
-  background-color: #b8f3ec;
+  background-color: #7c8080;
   min-height: 100vh;
 }
 
 .main__restaurant {
-  background-color: #F4F4F4;
+  background-color: #ffffff;
   min-height: 90vh;
 }
 
