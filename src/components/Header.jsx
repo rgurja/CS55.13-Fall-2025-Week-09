@@ -64,9 +64,9 @@ export default function Header({ initialUser }) {
       {/* Logo link that navigates back to the home page */}
       <Link href="/" className="logo">
         {/* logo image */}
-        <img src="/friendly-eats.svg" alt="FriendlyEats" />
+        <img src="/california-schools.svg" alt="California Schools" />
         {/* brand text */}
-        Friendly Eats
+        California Schools
       </Link>
       {/* if a user is signed in show profile and menu, otherwise show sign-in link */}
       {user ? (
