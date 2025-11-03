@@ -12,7 +12,7 @@ body {
     ui-sans-serif,
     system-ui,
     -apple-system;
-  background-color: #e5f5f5;
+  background-color: #cecfd0;
   color: #3600e6;
 }
 h1,
@@ -91,7 +91,7 @@ footer {
   }
 
   & .button--confirm {
-    background-color: #00a2ff;
+    background-color: #0069a5;
     color: white;
     border-radius: 3px;
   }
@@ -105,12 +105,12 @@ footer {
 }
 
 header {
-  background-color: #004059;
-  color: #fffdfd;
+  background-color: #61035e;
+  color: #f6e7f5;
   display: flex;
   justify-content: space-between;
-  padding: 0 2rem;
-  height: 85px;
+  padding: 0 1rem;
+  height: 95px;
   align-items: center;
   & img {
     height: 5rem;
@@ -490,7 +490,7 @@ a {
 .filter-menu {
   background-color: white;
   border-radius: 3px;
-  border-bottom: 1px solid rgb(0, 132, 255);
+  border-bottom: 1px solid rgb(41, 46, 51);
 
   & summary {
     font-weight: bold;
