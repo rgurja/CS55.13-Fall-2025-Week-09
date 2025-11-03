@@ -19,7 +19,7 @@ h1,
 h2,
 h3 {
   font-family: "Helvetica Neue", Arial, sans-serif;
-  color: #007BFF;
+  color: #144376;
 }
 
 ul {
@@ -91,7 +91,7 @@ footer {
   }
 
   & .button--confirm {
-    background-color: #007BFF;
+    background-color: #375160;
     color: white;
     border-radius: 3px;
   }
@@ -105,7 +105,7 @@ footer {
 }
 
 header {
-  background-color: #023145;
+  background-color: #3a4443;
   color: #f7e5e4;
   display: flex;
   justify-content: space-between;
@@ -140,7 +140,7 @@ header {
   align-items: center;
 
   & img {
-    margin-inline-end: 12px;
+    margin-inline-end: 15px;
   }
 
   color: white;
@@ -203,18 +203,18 @@ header {
 }
 
 .main__home {
-  background-color: #7c8080;
+  background-color: #96a0a0;
   min-height: 100vh;
 }
 
 .main__restaurant {
-  background-color: #ffffff;
+  background-color: #effbdc;
   min-height: 90vh;
 }
 
 article {
   margin: 0 auto;
-  background-color: rgb(229 234 240);
+  background-color: rgba(233, 247, 245, 0.888);
   padding: 20px 40px;
 }
 
